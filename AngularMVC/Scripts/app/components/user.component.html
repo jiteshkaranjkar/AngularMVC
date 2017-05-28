@@ -1,0 +1,113 @@
+﻿<div class='panel panel-default'>
+    <div class='panel-heading' style="background-color:#5bc0de;"><h2 class="panel-title">User Management</h2></div>
+    <div class='panel-body'>
+        <div class='table-responsive'>
+            <div style="padding-bottom:10px"><button class="btn btn-primary" (click)="addUser()">Add User</button></div>
+            <div class="alert alert-info" role="alert" *ngIf="indLoading"><img src="../../images/loading.gif" width="32" height="32" /> Loading...</div>
+            <div *ngIf='users && users.length==0' class="alert alert-info" role="alert">No record found!</div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>First Name</th>
+                        <th>Middle Name</th>
+                        <th>Last Name</th>
+                        <th>DOB</th>
+                        <th>Gender</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let user of users">
+                        <td>{{user.Id}}</td>
+                        <td>{{user.FirstName}}</td>
+                        <td>{{user.MiddleName}}</td>
+                        <td>{{user.LastName}}</td>
+                        <td>{{user.DOB}}</td>
+                        <td>{{user.Gender}}</td>
+                        <td>
+                            <button title="Edit" class="btn btn-primary" (click)="editUser(user)">Edit</button>
+                            <button title="Delete" class="btn btn-danger" (click)="deleteUser(user.Id)">Delete</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <form class="form-horizontal" action="" [formGroup]="usrFrmGrp" (ngSubmit)="onSubmit(usrFrmGrp)" [hidden]="toggoleShowHide==0">
+        <div class='form-group table-responsive'>
+            <header>
+                <h2>{{operation}}</h2>
+            </header>
+            <table class="table">
+                <tr>
+                    <td class="form-group form-inline col-sm-6">
+                        <label for="FirstName" class="col-sm-4 control-label">First Name</label>
+                        <input type="text" class="form-control" placeholder="Enter First Name" formControlName="FirstName"/>
+                        <div *ngIf="usrFrmGrp.controls.FirstName.errors?.pattern" class="error">First Name has invalid charachters</div>
+                    </td>
+                    <td class="form-group form-inline col-sm-6">
+                        <div class="dropdown">
+                            <label for="Relation" class="col-sm-4 control-label">Relation</label>
+                            <button class="btn btn-default" type="button" data-toggle="dropdown">
+                                Relation
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li class="dropdown-header"><h4>First Relation</h4></li>
+                                <li><a href="">Father</a></li>
+                                <li><a>Mother</a></li>
+                                <li><a>Sister</a></li>
+                                <li><a>Brother</a></li>
+                                <li class="divider"></li>
+                                <li class="dropdown-header"><h4>Second Relation</h4></li>
+                                <li><a href="">Grand Father</a></li>
+                                <li><a>Grand Mother</a></li>
+                                <li><a>Sister in Law</a></li>
+                                <li><a>Brother in Law</a></li>
+                                <li><a>Cousin</a></li>
+                            </ul>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="form-group form-inline col-sm-6">
+                        <label for="MiddleName" class="col-sm-4 control-label">Middle Name</label>
+                        <input type="text" class="form-control" placeholder="Enter Last Name" formControlName="MiddleName" />
+                        <div *ngIf="usrFrmGrp.controls.MiddleName.errors?.pattern" class="error">Last Name has invalid charachters</div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="form-group form-inline col-sm-6">
+                        <label for="LastName" class="col-sm-4 control-label">Last Name</label>
+                        <input type="text" class="form-control" placeholder="Enter Last Name" formControlName="LastName" />
+                        <div *ngIf="usrFrmGrp.controls.LastName.errors?.pattern" class="error">Last Name has invalid charachters</div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="form-group form-inline col-sm-6">
+                        <label for="DOB" class="col-sm-4 control-label">DOB</label>
+                        <input type="text" class="form-control" placeholder="Date Of Birth" formControlName="DOB" />
+                        <div *ngIf="usrFrmGrp.controls.DOB.errors?.DOB" class="has-error">
+                            DOB must be between {{usrFrmGrp.controls.DOB.error?.DOB.min}} and {{usrFrmGrp.controls.DOB.error?.DOB.max}}
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="form-group form-inline col-sm-6">
+                        <label for="Gender" class="col-sm-4 control-label">Gender</label>
+                        <select type="text" class="form-control" placeholder="Gender" formControlName="Gender">
+                            <option *ngFor="let gender of lookUpTokens.genders" value="gender">{{gender}}</option>
+                        </select>
+                    </td>
+                </tr>
+            </table>
+            <p class="help-block">Enter all the required fields</p>
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-default" data-dissmiss="">Cancel</button>
+            <button type="submit" class="btn btn-default" ng-disabled="form.$invalid">Save</button>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,35 @@
+﻿<!DOCTYPE html>
+<html style="background-image:url(../../Images/hands.jpg);">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <script src="~/node_modules/core-js/client/shim.min.js"></script>
+    <script src="~/node_modules/zone.js/dist/zone.js"></script>
+    <script src="~/node_modules/reflect-metadata/Reflect.js"></script>
+    <script src="~/node_modules/systemjs/dist/system.src.js"></script>
+    @* Configure Systemjs *@
+    <script src="~/Scripts/systemjs.config.js"></script>
+
+    <script>
+        System.import('../../Scripts/app/main.js').catch(function (err) {
+            console.error(err);
+        });
+    </script>
+</head>
+<body style="background-image:url(../../Images/hands.jpg); opacity:2.0;">
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>
