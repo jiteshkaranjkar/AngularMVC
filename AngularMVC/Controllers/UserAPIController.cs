@@ -9,110 +9,141 @@ using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
 using AngularMVC.DBContext;
+using AngularMVC.Services;
+using System.IdentityModel.Tokens.Jwt;
+using System.Text;
+using Microsoft.IdentityModel.Tokens;
+using System.Security.Claims;
 
 namespace AngularMVC.Controllers
 {
     public class UserAPIController : ApiController
     {
-        private DOMODBEntities db = new DOMODBEntities();
+        private IUserService userService;
 
-        // GET: api/Children
-        public IQueryable<Child> GetChildren()
+        public UserAPIController()
         {
-            return db.Children;
+            this.userService = new UserService();
         }
 
-        // GET: api/Children/5
-        [ResponseType(typeof(Child))]
-        public IHttpActionResult GetChild(int id)
+        // GET: api/UserAPI
+        [HttpGet]
+        public IEnumerable<User> GetUsers()
         {
-            Child child = db.Children.Find(id);
-            if (child == null)
+            return userService.GetAll();
+        }
+
+        // GET: api/UserAPI/5
+        [HttpGet]
+        //[ResponseType(typeof(User))]
+        public IHttpActionResult GetUser(int id)
+        {
+            var user = userService.GetById(id);
+            if (user == null)
             {
                 return NotFound();
             }
 
-            return Ok(child);
+            return Ok(user);
         }
 
-        // PUT: api/Children/5
-        [ResponseType(typeof(void))]
-        public IHttpActionResult PutChild(int id, Child child)
+        // PUT: api/UserAPI/5
+        [HttpPut]
+        //[ResponseType(typeof(void))]
+        public IHttpActionResult PutUser(int id, User user)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            if (id != child.Id)
-            {
-                return BadRequest();
-            }
-
-            db.Entry(child).State = EntityState.Modified;
-
+            user.Id = id;
             try
             {
-                db.SaveChanges();
+                // save 
+                userService.Update(user, user.Password);
+                return Ok();
             }
-            catch (DbUpdateConcurrencyException)
+            catch (AppException ex)
             {
-                if (!ChildExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                // return error message if there was an exception
+                return BadRequest(ex.Message);
             }
-
-            return StatusCode(HttpStatusCode.NoContent);
         }
 
-        // POST: api/Children
-        [ResponseType(typeof(Child))]
-        public IHttpActionResult PostChild(Child child)
+        // DELETE: api/UserAPI/5
+        [HttpDelete]
+        //[ResponseType(typeof(User))]
+        public IHttpActionResult DeleteUser(int id)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+            userService.Delete(id);
 
-            db.Children.Add(child);
-            db.SaveChanges();
-
-            return CreatedAtRoute("DefaultApi", new { id = child.Id }, child);
-        }
-
-        // DELETE: api/Children/5
-        [ResponseType(typeof(Child))]
-        public IHttpActionResult DeleteChild(int id)
-        {
-            Child child = db.Children.Find(id);
-            if (child == null)
-            {
-                return NotFound();
-            }
-
-            db.Children.Remove(child);
-            db.SaveChanges();
-
-            return Ok(child);
+            return Ok();
         }
 
         protected override void Dispose(bool disposing)
         {
             if (disposing)
             {
-                db.Dispose();
             }
             base.Dispose(disposing);
         }
 
-        private bool ChildExists(int id)
+        // POST: api/UserAPI
+        [AllowAnonymous]
+        [HttpPost]
+        [ActionName("register")]
+        [ResponseType(typeof(User))]
+        public IHttpActionResult Register(DBContext.User user)
         {
-            return db.Children.Count(e => e.Id == id) > 0;
+            try
+            {
+                userService.Create(user, user.Password);
+                return CreatedAtRoute("DefaultApi", new { id = user.Id }, user);
+                //return Ok();
+            }
+            catch (AppException ex)
+            {
+                // return error message if there was an exception
+                return BadRequest(ex.Message);
+            }
+        }
+        public class AuthenticateUser
+        {
+            public string UserName { get; set; }
+            public string UserPwd { get; set; }
+        }
+
+        [AllowAnonymous]
+        [HttpPost]
+        [ActionName("authentication")]
+        [ResponseType(typeof(User))]
+        public IHttpActionResult Authentication(AuthenticateUser loginUser)
+        {
+            var user = userService.Authenticate(loginUser.UserName, loginUser.UserPwd);
+
+            if (user == null)
+                return Unauthorized();
+
+            //var tokenHandler = new JwtSecurityTokenHandler();
+            //var key = Encoding.ASCII.GetBytes("123");
+            //var tokenDescriptor = new SecurityTokenDescriptor
+            //{
+            //    Subject = new ClaimsIdentity(new Claim[]
+            //    {
+            //        new Claim(ClaimTypes.Name, user.Id.ToString())
+            //    }),
+            //    Expires = DateTime.UtcNow.AddDays(7),
+            //    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+            //};
+            //var token = tokenHandler.CreateToken(tokenDescriptor);
+            //var tokenString = tokenHandler.WriteToken(token);
+
+            //// return basic user info (without password) and token to store client side
+            ////return Ok(new
+            ////{
+            ////    Id = user.Id,
+            ////    Username = user.Username,
+            ////    FirstName = user.FirstName,
+            ////    LastName = user.LastName,
+            ////    Token = tokenString
+            ////});
+            return Ok(user);
         }
     }
 }

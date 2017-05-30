@@ -1,0 +1,1 @@
+{"version":3,"file":"dataTable.component.js","sourceRoot":"","sources":["dataTable.component.ts"],"names":[],"mappings":";;;;;;;;;;;AAAA,sCAAiD;AAQjD,IAAa,kBAAkB;IAA/B;IAGA,CAAC;IAAD,yBAAC;AAAD,CAAC,AAHD,IAGC;AADG;IADC,YAAK,EAAE;8BACF,KAAK;gDAAa;AAFf,kBAAkB;IAL9B,gBAAS,CAAC;QACP,QAAQ,EAAE,YAAY;QACtB,WAAW,EAAE,+BAA+B;KAC/C,CAAC;GAEW,kBAAkB,CAG9B;AAHY,gDAAkB"}

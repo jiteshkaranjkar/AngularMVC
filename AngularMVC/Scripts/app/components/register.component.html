@@ -1,0 +1,68 @@
+﻿<form class="form-horizontal" action="" [formGroup]="usrRegisterFrmGrp" (ngSubmit)="registerUser(usrRegisterFrmGrp.value)">
+    <div class='form-group table-responsive col-lg-10'>
+        <header>
+            <h2>Register User</h2>
+        </header>
+        <table class="table table-bordered ">
+            <tr>
+                <td class="form-group form-inline col-sm-6">
+                    <label for="FirstName" class="col-sm-4 control-label">First Name</label>
+                    <input type="text" class="form-control" placeholder="Enter First Name" formControlName="FirstName" required />
+                    <div *ngIf="usrRegisterFrmGrp.controls.FirstName.errors?.pattern" class="error">First Name has invalid charachters</div>
+                </td>
+                <td class="form-group form-inline col-sm-6">
+                    <label for="LastName" class="col-sm-4 control-label">Last Name</label>
+                    <input type="text" class="form-control" placeholder="Enter Last Name" formControlName="LastName" />
+                    <div *ngIf="usrRegisterFrmGrp.controls.LastName.errors?.pattern" class="error">Last Name has invalid charachters</div>
+                </td>
+            </tr>
+            <tr>
+                <td class="form-group form-inline col-sm-6">
+                    <label for="UserName" class="col-sm-4 control-label">User Name</label>
+                    <input type="text" class="form-control" placeholder="Enter User Name" formControlName="UserName" required />
+                    <div *ngIf="usrRegisterFrmGrp.controls.UserName.errors?.pattern" class="error">User Name has invalid charachters</div>
+                </td>
+                <td class="form-group form-inline col-sm-6">
+                    <label for="Password" class="col-sm-4 control-label">Password</label>
+                    <input type="text" class="form-control" placeholder="Enter First Name" formControlName="Password" required />
+                    <div *ngIf="usrRegisterFrmGrp.controls.Password.errors?.pattern" class="error">Password has invalid charachters</div>
+                </td>
+            </tr>
+            <tr>
+                <td class="form-group form-inline col-sm-6">
+                    <label for="DOB" class="col-sm-4 control-label">DOB</label>
+                    <input type="text" class="form-control" placeholder="Date Of Birth" formControlName="DOB" />
+                    <div *ngIf="usrRegisterFrmGrp.controls.DOB.errors?.DOB" class="has-error">
+                        DOB must be between {{usrRegisterFrmGrp.controls.DOB.error?.DOB.min}} and {{usrRegisterFrmGrp.controls.DOB.error?.DOB.max}}
+                    </div>
+                </td>
+                <td class="form-group form-inline col-sm-6">
+                    <label for="Gender" class="col-sm-4 control-label">Gender</label>
+                    <select type="text" class="form-control" placeholder="Gender" formControlName="Gender">
+                        <option *ngFor="let gender of lookUpTokens.genders" value="{{gender}}">{{gender}}</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td class="form-group form-inline col-sm-6">
+                    <label for="EmailId" class="col-sm-4 control-label">Email Id</label>
+                    <input type="text" class="form-control" placeholder="Enter Email Id" formControlName="EmailId" />
+                    <div *ngIf="usrRegisterFrmGrp.controls.EmailId.errors?.pattern" class="error">Email Id has invalid charachters</div>
+                </td>
+            </tr>
+            <tr>
+                <td class="form-group form-inline">
+                    <div class="col-sm-6 col-sm-push-9">
+                        <button [routerLink]="['/home']" type="submit" class="btn btn-default" data-dissmiss="">Cancel</button>
+                    </div>
+                </td>
+                <td class="form-group form-inline">
+                    <div class="col-sm-6  col-sm-offset-1">
+                        <button type="submit" class="btn btn-default" [disabled]="!usrRegisterFrmGrp.valid">Save</button>
+                        <img *ngIf="loading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+</form>

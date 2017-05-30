@@ -6,25 +6,18 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
 import { Routing } from './app.routing';
-import { HomeComponent } from './components/home.component';
-import { UserComponent } from './components/user.component';
-import { ScheduleComponent } from './components/schedule.component';
-import { ParentingComponent } from './components/parenting.component';
-import { PoliciesComponent } from './components/policies.component';
-import { GalleryComponent } from './components/gallery.component';
-import { ProgramsComponent } from './components/programs.component';
-import { EventsComponent } from './components/events.component';
-import { AboutComponent } from './components/about.component';
-import { ContactUsComponent } from './components/contactus.component';
-import { UserService } from './services/user.service';
+import { HomeComponent, UserComponent, ProfileComponent, GalleryComponent, ProgramsComponent } from './components/index';
+import { PorfolioStocksComponent, AboutComponent, ContactUsComponent, RegisterComponent } from './components/index';
+import { AlertComponent } from './shared/alert.component';
+import { UserService, StockService, AlertService, AuthenticationService } from './services/index';
 
 import { lookUpTokenList, lookUpTokens } from './models/Providers';
 
 @NgModule({
     imports: [BrowserModule, ReactiveFormsModule, HttpModule, Routing],
-    declarations: [AppComponent, UserComponent, HomeComponent, ScheduleComponent, ParentingComponent,
-                    PoliciesComponent, GalleryComponent, ProgramsComponent, EventsComponent, AboutComponent, ContactUsComponent],
-    providers: [{ provide: APP_BASE_HREF, useValue: '/' }, UserService,
+    declarations: [AppComponent, UserComponent, HomeComponent, ProfileComponent, GalleryComponent,
+        ProgramsComponent, PorfolioStocksComponent, AboutComponent, ContactUsComponent, RegisterComponent, AlertComponent],
+    providers: [{ provide: APP_BASE_HREF, useValue: '/' }, UserService, StockService, AlertService, AuthenticationService,
         { provide: lookUpTokenList, useValue: lookUpTokens }],
     bootstrap: [AppComponent]
 })

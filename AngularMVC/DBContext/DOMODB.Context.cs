@@ -31,5 +31,8 @@ namespace AngularMVC.DBContext
         public virtual DbSet<Event> Events { get; set; }
         public virtual DbSet<FeesSchedule> FeesSchedules { get; set; }
         public virtual DbSet<Parent> Parents { get; set; }
+        public virtual DbSet<StockTransaction> StockTransactions { get; set; }
+        public virtual DbSet<PorfolioStock> PorfolioStocks { get; set; }
+        public virtual DbSet<User> Users { get; set; }
     }
 }

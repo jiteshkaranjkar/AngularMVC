@@ -1,6 +1,5 @@
 ﻿import { Component, OnInit, Inject, ViewChild, TemplateRef } from '@angular/core';
 import { FormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-//import { ModalComponent } from 'ng2-bs3-modal/ng2-bs3-modal';
 
 import { IUser } from '../models/IUser';
 import { UserService } from '../services/user.service';
@@ -13,7 +12,7 @@ import { lookUpTokenList, lookUpTokens } from '../models/Providers';
 })
 
 export class UserComponent implements OnInit {
-    //@ViewChild('modal') modal: ModalComponent;
+
     init: OnInit;
     user: IUser;
     users: IUser[];
@@ -30,13 +29,11 @@ export class UserComponent implements OnInit {
         this.usrFrmGrp = this.frmBldr.group({
             Id: [''],
             FirstName: ['', Validators.compose([Validators.required, Validators.pattern('[\\w\\-\\s\\/]+')])],
-            MiddleName: ['',],
             LastName: ['', Validators.compose([Validators.required, Validators.pattern('[\\w\\-\\s\\/]+')])],
             Gender: ['', Validators.required],
             DOB: ['', Validators.required],
-            FatherId: [''],
-            MotherId: [''],
-            GaurdianId: ['']
+            EmailId: ['', Validators.compose([Validators.required, Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$')])],
+            Password: ['']
         });
         this.LoadUsers();
     }
@@ -63,6 +60,7 @@ export class UserComponent implements OnInit {
     }
 
     addUser() {
+        this.dbOps = DBOperation.insert;
         this.toggoleShowHide = 1;
         this.SetControlState(true);
         this.operation = "Add New User";
@@ -70,49 +68,70 @@ export class UserComponent implements OnInit {
     }
 
     editUser(user: IUser) {
+        this.dbOps = DBOperation.update;
         this.toggoleShowHide = 1;
         this.SetControlState(true);
         this.operation = "Edit User";
         this.usrFrmGrp.setValue(user);
     }
 
-    deleteUser(id: number) {
+    deleteUser(id: number, user: IUser) {
+        alert(id);
+        this.toggoleShowHide = 0;
+        this.dbOps = DBOperation.delete;
         this.SetControlState(false);
-        this.user = this.users.filter(x => x.Id = id)[0];
-
+        this.user = this.users.filter(x => x.Id = user.Id)[0];
+        this.usrFrmGrp.setValue(user);
+        debugger;
+        this.userService.delete('api/userapi/', user.Id).subscribe(
+            data => {
+                if (data != null && data.Id != 0) //Success
+                {
+                    this.msg = "Data successfully deleted.";
+                    this.toggoleShowHide = 0;
+                    this.LoadUsers();
+                }
+                else {
+                    this.msg = "There is some issue in saving records, please contact to system administrator!"
+                }
+            },
+            error => {
+                this.msg = error;
+            }
+        );
     }
 
     onSubmit(formData: any) {
         this.msg = "";
-
-        alert("onSubmit:" + formData.value);
         switch (this.dbOps) {
             case DBOperation.insert:
-                alert("insert");
-                this.userService.post('api/userapi/', formData.value).subscribe(
+                formData.Id = 0;
+                formData.FatherId = 0;
+                formData.MotherId = 0;
+                formData.GaurdianId = 0;
+                this.userService.post('api/userapi/', formData).subscribe(
                     data => {
-                        alert("Data");
-                        if (data == 1) {
+                        if (data != null && data.Id != 0) //Success
+                        {
                             this.msg = "Data Successfully Added."
+                            this.toggoleShowHide = 0;
                             this.LoadUsers();
                         }
                         else {
-                            alert("else");
                             this.msg = "There is some issue in saving records, please contact to system administrator!"
                         }
                     },
                     error => {
-                        alert("error");
                         this.msg = error;
                     });
                 break;
             case DBOperation.update:
-                alert("update");
                 this.userService.put('api/userapi/', formData.value.Id, formData.value).subscribe(
                     data => {
-                        if (data == 1) //Success
+                        if (data != null && data.Id != 0) //Success
                         {
                             this.msg = "Data successfully updated.";
+                            this.toggoleShowHide = 0;
                             this.LoadUsers();
                         }
                         else {
@@ -125,11 +144,12 @@ export class UserComponent implements OnInit {
                 );
             case DBOperation.delete:
                 alert("delete");
-                this.userService.delete('api/userapi/', formData._value.Id).subscribe(
+                  this.userService.delete('api/userapi/', formData.value.Id).subscribe(
                     data => {
-                        if (data == 1) //Success
+                        if (data != null && data.Id != 0) //Success
                         {
                             this.msg = "Data successfully deleted.";
+                            this.toggoleShowHide = 0;
                             this.LoadUsers();
                         }
                         else {
@@ -140,6 +160,9 @@ export class UserComponent implements OnInit {
                         this.msg = error;
                     }
                 );
+                break;
+            default:
+                alert("default");
                 break;
         }
     }

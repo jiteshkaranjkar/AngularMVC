@@ -1,0 +1,155 @@
+﻿<div class='panel panel-default'>
+    <div class='panel-heading' style="background-color:#5bc0de;"><h2 class="panel-title">Stock Management</h2></div>
+    <div class='panel-body'>
+        <div class='table-responsive'>
+            <div style="padding-bottom:10px">
+                <button class="btn btn-primary" (click)="addStock()">Add Stock</button>
+                <div action="" class="navbar-form navbar-right " role="search">
+                    <div class="form-group form-inline">
+                        <input #textbox class="form-control" type="text" placeholder="Get Quote" value="{{quoteStr}}" />
+                    </div>
+                    <a class="btn btn-info" (click)="getQuote(textbox.value)">
+                        <span class="glyphicon glyphicon-search"></span>
+                    </a>
+                </div>
+            </div>
+            <div  [hidden]="stkQuoteVisibility==0">
+                <label for="stockList" class="col-sm-12 control-label">{{quoteStr}} - {{stkDetails}}</label>
+            </div>
+            <div class="alert alert-info" role="alert" *ngIf="indLoading"><img src="../../images/loading.gif" width="32" height="32" /> Loading...</div>
+            <div *ngIf='stocks && stocks.length==0' class="alert alert-info" role="alert">No record found!</div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>STOCK</th>
+                        <!--<th>DESCRIPTION</th>-->
+                        <th>QUANTITY</th>
+                        <th>AVG</th>
+                        <th>CLOSING</th>
+                        <th>MARKETRATE</th>
+                        <th>GAIN/LOSS</th>
+                        <th>MARKETVAL</th>
+                        <!--<th>ISIN</th>-->
+                        <th>HOLDINGVALUE</th>
+                        <th>%CHANGE</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let stock of stocks">
+                        <td style="font-weight:bold; text-underline-position:auto;">
+                            <a href="https://www.nseindia.com/live_market/dynaContent/live_watch/get_quote/GetQuote.jsp?symbol={{stock.STOCKNAME}}" target="_blank">{{stock.STOCKNAME}}</a>
+                        </td>
+                        <!--<td>{{stock.DESCRIPTIdON}}</td>-->
+                        <td>{{stock.NETPOSITION}}</td>
+                        <td>{{stock.AVGRATE}}</td>
+                        <td>{{stock.CLOSING}}</td>
+                        <td>{{stock.MARKETRATE}}</td>
+                        <td>{{stock.GAINLOSS}}</td>
+                        <td>{{stock.MARKETVAL}}</td>
+                        <!--<td>{{stock.ISIN}}</td>-->
+                        <td>{{stock.HOLDINGVALUE}}</td>
+                        <td>{{stock.PERCENTCHANGE}}</td>
+                        <td>
+                            <button title="Edit" class="btn btn-primary" (click)="editStock(stock)">Edit</button>
+                            <button title="Delete" class="btn btn-danger" (click)="deleteStock(Id, stock)">Delete</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<label for="stockList" class="col-sm-12 control-label">Google API {{googAPIopArry}}</label>
+<!--<label for="stockList" class="col-sm-6 control-label">Google API  arrayss{{apiStockList}}</label>-->
+<div class="container">
+    <form class="form-horizontal" action="" [formGroup]="stkFrmGrp" (ngSubmit)="onSubmit(stkFrmGrp.value)" [hidden]="toggoleShowHide==0">
+        <div class='form-group table-responsive'>
+            <header>
+                <h2>{{operation}}</h2>
+            </header>
+            <table class="table">
+                <tr>
+                    <td class="form-group form-inline col-sm-6">
+                        <label for="STOCKNAME" class="col-sm-4 control-label">STOCK Name</label>
+                        <input type="text" class="form-control" placeholder="Enter STOCK Name" formControlName="STOCKNAME" />
+                        <div *ngIf="stkFrmGrp.controls.STOCKNAME.errors?.pattern" class="error">STOCK Name has invalid charachters</div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="form-group form-inline col-sm-6">
+                        <label for="AVGRATE" class="col-sm-4 control-label">AVG RATE</label>
+                        <input type="text" class="form-control" placeholder="stock buying RATE" formControlName="AVGRATE" />
+                        <div *ngIf="stkFrmGrp.controls.AVGRATE.errors?.pattern" class="error">invalid AVGRATE should be in numbers</div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="form-group form-inline col-sm-6">
+                        <label for="NETPOSITION" class="col-sm-4 control-label">NETPOSITION</label>
+                        <input type="text" class="form-control" placeholder="quantity bought" formControlName="NETPOSITION" />
+                        <div *ngIf="stkFrmGrp.controls.NETPOSITION.errors?.pattern" class="error">NETPOSITION should be in numbers</div>
+                    </td>
+                </tr>
+                <!--<tr>
+                    <td class="form-group form-inline col-sm-6">
+                        <label for="DOB" class="col-sm-4 control-label">DOB</label>
+                        <input type="text" class="form-control" placeholder="Date Of Birth" formControlName="DOB" />
+                        <div *ngIf="stkFrmGrp.controls.DOB.errors?.DOB" class="has-error">
+                            DOB must be between {{stkFrmGrp.controls.DOB.error?.DOB.min}} and {{stkFrmGrp.controls.DOB.error?.DOB.max}}
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="form-group form-inline col-sm-6">
+                        <label for="Gender" class="col-sm-4 control-label">Gender</label>
+                        <select type="text" class="form-control" placeholder="Gender" formControlName="Gender">
+                            <option *ngFor="let gender of lookUpTokens.genders" value="{{gender}}">{{gender}}</option>
+                        </select>
+                    </td>
+                </tr>-->
+                <tr>
+                    <td class="form-group form-inline">
+                        <div class="col-sm-4 col-sm-offset-4">
+                            <button type="submit" class="btn btn-default" data-dissmiss="">Cancel</button>
+                            <button type="submit" class="btn btn-default"  [disabled]="!stkFrmGrp.valid">Save</button>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </form>
+</div>
+<!--<div class='panel panel-default'>
+    <div class='panel-heading' style="background-color:#5bc0de;"><h2 class="panel-title">Stock Data</h2></div>
+    <div class='panel-body'>
+        <div class='table-responsive'>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>STOCK Id</th>
+                        <th>STOCK Name</th>
+                        <th>Index</th>
+                        <th>CLOSING</th>
+                        <th>MARKETRATE</th>
+                        <th>GAIN/LOSS</th>
+                        <th>MARKETVAL</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let stock of stockList">
+                        <td>{{stock.id}}</td>
+                        <td>{{stock.t}}</td>
+                        <td>{{stock.e}}</td>
+                        <td>{{stock.l}}</td>
+                        <td>{{stock.l_cur}}</td>
+                        <td>{{stock.ltt}}</td>
+                        <td>{{stock.lt_dts}}</td>
+                        <td>
+                            <button title="Edit" class="btn btn-primary" (click)="editStock(stock)">Edit</button>
+                            <button title="Delete" class="btn btn-danger" (click)="deleteStock(Id, stock)">Delete</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>-->

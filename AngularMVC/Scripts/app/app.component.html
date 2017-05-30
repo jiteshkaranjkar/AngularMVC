@@ -1,61 +1,137 @@
 ﻿<!--<div class="background">
     <div class="transbox">-->
-<div class='navbar navbar-inverse navbar-fixed-top'>
-    <div class="container">
-        <div class='nav navbar-header'>
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#DomoNav">
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-        </div>
-        <div class="collapse navbar-collapse" id="DomoNav">
-            <ul class='nav navbar-nav'>
-                <li class="fade in active"><a routerLink='home' routerLinkActive="active">Home</a></li>
-                <li class="fade in active"><a routerLink='user' routerLinkActive="active">Users</a></li>
-                <li class="fade in active"><a routerLink='schedule' routerLinkActive="active">Schedule</a></li>
-                <li class="fade in active"><a routerLink='parenting' routerLinkActive="active">Parenting</a></li>
-                <li class="fade in active"><a routerLink='policies' routerLinkActive="active">Policies</a></li>
-                <li class="fade in active"><a routerLink='gallery' routerLinkActive="active">Gallery</a></li>
-                <li class="fade in active"><a routerLink='programs' routerLinkActive="active">Programs</a></li>
-                <li class="fade in active"><a routerLink='events' routerLinkActive="active">Events</a></li>
-                <li class="fade in active"><a routerLink='about' routerLinkActive="active">About</a></li>
-                <li class="fade in active"><a routerLink='contactUs' routerLinkActive="active">ContactUs</a></li>
-            </ul>
-            <div action="" class="navbar-form navbar-right " role="search">
-                <div class="form-group form-inline">
-                    <input class="form-control" type="text" placeholder="Search" />
+<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+<header>
+    <div class='navbar navbar-inverse navbar-fixed-top'>
+        <div class="container">
+            <div class='nav navbar-header'>
+                <div class="navbar-brand" href="/" style="font-weight:bolder; color:cyan;">My Angular App</div>
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#DomoNav">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <div class="collapse navbar-collapse" id="DomoNav">
+                <ul class='nav navbar-nav'>
+                    <li class="fade in active"><a routerLink='home'>Home</a></li>
+                    <li><a routerLink='user' routerLinkActive="active">Users</a></li>
+                    <li><a routerLink='Profile' routerLinkActive="active">Profile</a></li>
+                    <!--<li><a routerLink='gallery' routerLinkActive="active">Gallery</a></li>-->
+                    <!--<li><a routerLink='programs' routerLinkActive="active">Programs</a></li>-->
+                    <li><a routerLink='Porfolio' routerLinkActive="active">Porfolio</a></li>
+                    <li><a routerLink='about' routerLinkActive="active">About</a></li>
+                    <li><a routerLink='contactUs' routerLinkActive="active">ContactUs</a></li>
+                    <!--<li><a routerLink='register' routerLinkActive="active">Register</a></li>
+                    <li><a routerLink='alert' routerLinkActive="active">Alert</a></li>-->
+                </ul>
+                <div action="" class="navbar-form navbar-header" role="search">
+                    <div class="form-group form-inline">
+                        <input class="form-control" type="text" placeholder="Search" />
+                    </div>
+                    <a class="btn btn-info">
+                        <span class="glyphicon glyphicon-search"></span>
+                    </a>
                 </div>
-                <a class="btn btn-info">
-                    <span class="glyphicon glyphicon-search"></span>
-                </a>
+                <div action="" class="navbar-form navbar-right" role="form">
+                    <a class="btn btn-info" href="#" data-toggle="modal" data-target="#login-modal" (click)="LoginClick()">
+                        <span id="loginSpan" class="{{loginClass}}">{{userLoginText}}</span>
+                    </a>
+                </div>
+            </div>
+            <!--<div class="carousel-control" data-ride="carousel" id="carouselId">
+                <ol class="carousel-indicators">
+                    <li class="active" data-target="carouselId" data-slide-to="0"></li>
+                    <li class="active" data-target="carouselId" data-slide-to="1"></li>
+                    <li class="active" data-target="carouselId" data-slide-to="2"></li>
+                    <li class="active" data-target="carouselId" data-slide-to="3"></li>
+                    <li class="active" data-target="carouselId" data-slide-to="4"></li>
+                    <li class="active" data-target="carouselId" data-slide-to="5"></li>
+                    <li class="active" data-target="carouselId" data-slide-to="6"></li>
+                </ol>
+                <div class="carousel-inner">
+                    <div class="item"><img src="../../Images/DOMO1.JPG" /></div>
+                    <div class="item"><img src="../../Images/DOMO2.JPG" /></div>
+                    <div class="item"><img src="../../Images/DOMO3.JPG" /></div>
+                    <div class="item"><img src="../../Images/DOMO4.JPG" /></div>
+                    <div class="item"><img src="../../Images/DOMO5.JPG" /></div>
+                    <div class="item"><img src="../../Images/DOMO6.JPG" /></div>
+                    <div class="item"><img src="../../Images/DOMO7.JPG" /></div>
+                </div>
+            </div>-->
+        </div>
+    </div>
+</header>
+<div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <form class="form-horizontal" action="" [formGroup]="loginFrmGrp" (ngSubmit)="onLogin(loginFrmGrp.value)" [hidden]="toggoleShowHide==1">
+        <div class="modal-dialog">
+            <div class="loginmodal-container">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12 col-md-offset-2">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <span class="glyphicon glyphicon-lock"></span> Login
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true" #closeBtn>×</button>
+                                </div>
+                                <div class="panel-body">
+                                    <!--<form class="form-horizontal" role="form">-->
+                                    <div class="form-group">
+                                        <label for="UserName" class="col-sm-3 control-label">
+                                            User Name
+                                        </label>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control" placeholder="User Name" required formControlName="UserName">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="UserPwd" class="col-sm-3 control-label">
+                                            Password
+                                        </label>
+                                        <div class="col-sm-9">
+                                            <input type="password" class="form-control" placeholder="Password" required formControlName="UserPwd">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-sm-offset-3 col-sm-9">
+                                            <div class="checkbox">
+                                                <label>
+                                                    <input type="checkbox" />
+                                                    Remember me
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group last">
+                                        <div class="col-sm-offset-3 col-sm-9">
+                                            <button type="submit" class="btn btn-success btn-sm">
+                                                Login
+                                            </button>
+                                            <button type="reset" class="btn btn-default btn-sm" (click)="resetControls()">
+                                                Reset
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <!--</form>-->
+                                </div>
+                                <div class="panel-footer">
+                                    Not Registred? <a data-dismiss="modal" [routerLink]="['register']">Register here</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
-        <!--<div class="carousel-control" data-ride="carousel" id="carouselId">
-            <ol class="carousel-indicators">
-                <li class="active" data-target="carouselId" data-slide-to="0"></li>
-                <li class="active" data-target="carouselId" data-slide-to="1"></li>
-                <li class="active" data-target="carouselId" data-slide-to="2"></li>
-                <li class="active" data-target="carouselId" data-slide-to="3"></li>
-                <li class="active" data-target="carouselId" data-slide-to="4"></li>
-                <li class="active" data-target="carouselId" data-slide-to="5"></li>
-                <li class="active" data-target="carouselId" data-slide-to="6"></li>
-            </ol>
-            <div class="carousel-inner">
-                <div class="item"><img src="../../Images/DOMO1.JPG" /></div>
-                <div class="item"><img src="../../Images/DOMO2.JPG" /></div>
-                <div class="item"><img src="../../Images/DOMO3.JPG" /></div>
-                <div class="item"><img src="../../Images/DOMO4.JPG" /></div>
-                <div class="item"><img src="../../Images/DOMO5.JPG" /></div>
-                <div class="item"><img src="../../Images/DOMO6.JPG" /></div>
-                <div class="item"><img src="../../Images/DOMO7.JPG" /></div>
-            </div>
-        </div>-->
-    </div>
+    </form>
 </div>
 <div class='container'>
     <router-outlet>
     </router-outlet>
 </div>
-<!--</div>
-</div>-->
+
+<!--<hr />
+<footer>
+    <p>&copy; @DateTime.Now.Year - MyMy Angular App</p>
+</footer>-->

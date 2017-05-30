@@ -11,6 +11,9 @@
         <EntityTypeShape EntityType="DOMODBModel.Event" Width="1.5" PointX="4.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="DOMODBModel.FeesSchedule" Width="1.5" PointX="4.75" PointY="3.75" IsExpanded="true" />
         <EntityTypeShape EntityType="DOMODBModel.Parent" Width="1.5" PointX="6.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DOMODBModel.StockTransaction" Width="1.5" PointX="8.5" PointY="4.25" />
+        <EntityTypeShape EntityType="DOMODBModel.PorfolioStock" Width="1.5" PointX="8.875" PointY="0.75" />
+        <EntityTypeShape EntityType="DOMODBModel.User" Width="1.5" PointX="0.75" PointY="3.875" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

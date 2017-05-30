@@ -26,4 +26,95 @@ nav a:hover {
 nav a.active {
   color: #039be5;
 }
+.header-tp .navbar {
+    position: relative;
+	min-height: 50px;
+	margin-bottom: 0px;
+	border: 1px solid transparent;
+}
 
+.header-tp .navbar-default {
+	background-color: #1DB9EC;
+	border-color:transparent!important;
+}
+.header-tp .bdr li:nth-child(odd) 
+{
+	border-left: 1px solid rgba(255, 255, 255, 0.44);
+
+}
+
+.header-tp .bdr li:nth-child(even) 
+{
+	border-right: 1px solid rgba(255, 255, 255, 0.44);
+	border-left: 1px solid rgba(255, 255, 255, 0.44);
+}
+.header-tp .bdr li
+{
+	padding:10px 0px;
+}
+.header-tp .bdr li a
+{
+	color:#fff!important;
+}
+
+.header-tp .pddr
+{
+	padding-top:5px;
+}
+
+.header-tp .navbar-right {
+    float: right !important;
+    margin-right: 30px;
+}
+
+.header-tp  .nav > li {
+    position: relative;
+    display: inline-block;
+}
+
+.btn-blu {
+	display: inline-block;
+	padding: 10px 35px;
+	font-size: 14px;
+	font-weight: 400;
+	line-height: 1.42857143;
+	text-align: center;
+	white-space: nowrap;
+	vertical-align: middle;
+	-ms-touch-action: manipulation;
+	touch-action: manipulation;
+	cursor: pointer;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	background-image: none;
+	border: 1px solid transparent;
+	border-radius: 0px;
+	background-color: #0D4459;
+	border-color: #0D4459;
+	color: #fff;
+}      
+.mrgn-top
+{
+	margin-top:15px;
+	margin-right:15px;
+}    
+
+.header-tp
+{
+    margin: 10px 0px;
+}    
+body { 
+  background: url(http://lorempixel.com/1920/1920/city/9/) no-repeat center center fixed; 
+  /*-webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;*/
+  background-size: cover;
+}
+
+.panel-default {
+opacity: 0.9;
+margin-top:30px;
+}
+.form-group.last { margin-bottom:0px; }

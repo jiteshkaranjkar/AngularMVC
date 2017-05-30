@@ -31,7 +31,7 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
-    <DebugType>pdbonly</DebugType>
+    <DebugType>full</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
@@ -48,6 +48,10 @@
     <UseVSHostingProcess>true</UseVSHostingProcess>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AutoMapper, Version=6.0.2.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.6.0.2\lib\net45\AutoMapper.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
       <Private>True</Private>
@@ -61,9 +65,25 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.IdentityModel.Logging, Version=1.1.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.IdentityModel.Logging.1.1.3\lib\net451\Microsoft.IdentityModel.Logging.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.IdentityModel.Tokens, Version=5.1.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.IdentityModel.Tokens.5.1.3\lib\net451\Microsoft.IdentityModel.Tokens.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.IdentityModel.Tokens.Jwt, Version=5.1.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IdentityModel.Tokens.Jwt.5.1.3\lib\net451\System.IdentityModel.Tokens.Jwt.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
     <Reference Include="System.Web.DynamicData" />
@@ -126,9 +146,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
     <Reference Include="System.Net.Http.Formatting">
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
     </Reference>
@@ -140,6 +157,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\PorfolioStocksController.cs" />
     <Compile Include="Controllers\UserAPIController.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
@@ -179,10 +197,24 @@
     <Compile Include="DBContext\Parent.cs">
       <DependentUpon>DOMODB.tt</DependentUpon>
     </Compile>
+    <Compile Include="DBContext\PorfolioStock.cs">
+      <DependentUpon>DOMODB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBContext\StockTransaction.cs">
+      <DependentUpon>DOMODB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBContext\User.cs">
+      <DependentUpon>DOMODB.tt</DependentUpon>
+    </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\AutoMapperProfile.cs" />
+    <Compile Include="Models\UserEntity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Helpers\AppException.cs" />
+    <Compile Include="Services\IUserService.cs" />
+    <Compile Include="Services\UserService.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
@@ -203,17 +235,10 @@
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="Images\baby-hand-mother-s-palm-22700503.jpg" />
-    <Content Include="Images\DOMO1.JPG" />
-    <Content Include="Images\DOMO10.JPG" />
-    <Content Include="Images\DOMO2.JPG" />
-    <Content Include="Images\DOMO3.JPG" />
-    <Content Include="Images\DOMO4.JPG" />
-    <Content Include="Images\DOMO5.JPG" />
-    <Content Include="Images\DOMO6.JPG" />
-    <Content Include="Images\DOMO7.JPG" />
-    <Content Include="Images\DOMO8.JPG" />
-    <Content Include="Images\DOMO9.JPG" />
+    <Content Include="Images\blue-BrickWall-1.jpg" />
     <Content Include="Images\hands.jpg" />
+    <Content Include="Images\light-background-1.jpg" />
+    <Content Include="Images\light-blue-background-4.jpeg" />
     <Content Include="Images\loading.gif" />
     <Content Include="Scripts\angular-mocks.js" />
     <Content Include="Scripts\angular-route.js" />
@@ -228,14 +253,15 @@
     <Content Include="Scripts\app\app.component.html" />
     <Content Include="Scripts\app\components\about.component.html" />
     <Content Include="Scripts\app\components\contactus.component.html" />
-    <Content Include="Scripts\app\components\events.component.html" />
+    <Content Include="Scripts\app\components\PorfolioStocks.component.html" />
     <Content Include="Scripts\app\components\gallery.component.html" />
     <Content Include="Scripts\app\components\home.component.html" />
-    <Content Include="Scripts\app\components\parenting.component.html" />
-    <Content Include="Scripts\app\components\policies.component.html" />
     <Content Include="Scripts\app\components\programs.component.html" />
-    <Content Include="Scripts\app\components\schedule.component.html" />
+    <Content Include="Scripts\app\components\profile.component.html" />
+    <Content Include="Scripts\app\components\register.component.html" />
     <Content Include="Scripts\app\components\user.component.html" />
+    <Content Include="Scripts\app\HtmlPage1.html" />
+    <Content Include="Scripts\app\shared\alert.component.html" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="package.json" />
@@ -280,7 +306,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Models\" />
+    <Folder Include="Scripts\app\helpers\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -296,18 +322,25 @@
     <TypeScriptCompile Include="Scripts\app\app.routing.ts" />
     <TypeScriptCompile Include="Scripts\app\components\about.component.ts" />
     <TypeScriptCompile Include="Scripts\app\components\contactus.component.ts" />
-    <TypeScriptCompile Include="Scripts\app\components\events.component.ts" />
+    <TypeScriptCompile Include="Scripts\app\components\index.ts" />
+    <TypeScriptCompile Include="Scripts\app\components\PorfolioStocks.component.ts" />
     <TypeScriptCompile Include="Scripts\app\components\gallery.component.ts" />
     <TypeScriptCompile Include="Scripts\app\components\home.component.ts" />
-    <TypeScriptCompile Include="Scripts\app\components\parenting.component.ts" />
-    <TypeScriptCompile Include="Scripts\app\components\policies.component.ts" />
     <TypeScriptCompile Include="Scripts\app\components\programs.component.ts" />
-    <TypeScriptCompile Include="Scripts\app\components\schedule.component.ts" />
+    <TypeScriptCompile Include="Scripts\app\components\profile.component.ts" />
+    <TypeScriptCompile Include="Scripts\app\components\register.component.ts" />
     <TypeScriptCompile Include="Scripts\app\components\user.component.ts" />
     <TypeScriptCompile Include="Scripts\app\main.ts" />
+    <TypeScriptCompile Include="Scripts\app\models\GoogleFinanceAPIModel.ts" />
+    <TypeScriptCompile Include="Scripts\app\models\IStock.ts" />
     <TypeScriptCompile Include="Scripts\app\models\IUser.ts" />
     <TypeScriptCompile Include="Scripts\app\models\Providers.ts" />
+    <TypeScriptCompile Include="Scripts\app\services\alert.service.ts" />
+    <TypeScriptCompile Include="Scripts\app\services\authentication.service.ts" />
+    <TypeScriptCompile Include="Scripts\app\services\index.ts" />
+    <TypeScriptCompile Include="Scripts\app\services\stock.service.ts" />
     <TypeScriptCompile Include="Scripts\app\services\user.service.ts" />
+    <TypeScriptCompile Include="Scripts\app\shared\alert.component.ts" />
     <TypeScriptCompile Include="Scripts\app\shared\enums.ts" />
   </ItemGroup>
   <ItemGroup>

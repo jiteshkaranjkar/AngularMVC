@@ -29,13 +29,11 @@ var UserComponent = (function () {
         this.usrFrmGrp = this.frmBldr.group({
             Id: [''],
             FirstName: ['', forms_1.Validators.compose([forms_1.Validators.required, forms_1.Validators.pattern('[\\w\\-\\s\\/]+')])],
-            MiddleName: ['',],
             LastName: ['', forms_1.Validators.compose([forms_1.Validators.required, forms_1.Validators.pattern('[\\w\\-\\s\\/]+')])],
             Gender: ['', forms_1.Validators.required],
             DOB: ['', forms_1.Validators.required],
-            FatherId: [''],
-            MotherId: [''],
-            GaurdianId: ['']
+            EmailId: ['', forms_1.Validators.compose([forms_1.Validators.required, forms_1.Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$')])],
+            Password: ['']
         });
         this.LoadUsers();
     };
@@ -59,48 +57,68 @@ var UserComponent = (function () {
             subscribe(function (users) { _this.users = users; _this.indLoading = false; }, function (error) { return _this.msg = error; });
     };
     UserComponent.prototype.addUser = function () {
+        this.dbOps = enums_1.DBOperation.insert;
         this.toggoleShowHide = 1;
         this.SetControlState(true);
         this.operation = "Add New User";
         this.usrFrmGrp.reset();
     };
     UserComponent.prototype.editUser = function (user) {
+        this.dbOps = enums_1.DBOperation.update;
         this.toggoleShowHide = 1;
         this.SetControlState(true);
         this.operation = "Edit User";
         this.usrFrmGrp.setValue(user);
     };
-    UserComponent.prototype.deleteUser = function (id) {
+    UserComponent.prototype.deleteUser = function (id, user) {
+        var _this = this;
+        alert(id);
+        this.toggoleShowHide = 0;
+        this.dbOps = enums_1.DBOperation.delete;
         this.SetControlState(false);
-        this.user = this.users.filter(function (x) { return x.Id = id; })[0];
+        this.user = this.users.filter(function (x) { return x.Id = user.Id; })[0];
+        this.usrFrmGrp.setValue(user);
+        debugger;
+        this.userService.delete('api/userapi/', user.Id).subscribe(function (data) {
+            if (data != null && data.Id != 0) {
+                _this.msg = "Data successfully deleted.";
+                _this.toggoleShowHide = 0;
+                _this.LoadUsers();
+            }
+            else {
+                _this.msg = "There is some issue in saving records, please contact to system administrator!";
+            }
+        }, function (error) {
+            _this.msg = error;
+        });
     };
     UserComponent.prototype.onSubmit = function (formData) {
         var _this = this;
         this.msg = "";
-        alert("onSubmit:" + formData.value);
         switch (this.dbOps) {
             case enums_1.DBOperation.insert:
-                alert("insert");
-                this.userService.post('api/userapi/', formData.value).subscribe(function (data) {
-                    alert("Data");
-                    if (data == 1) {
+                formData.Id = 0;
+                formData.FatherId = 0;
+                formData.MotherId = 0;
+                formData.GaurdianId = 0;
+                this.userService.post('api/userapi/', formData).subscribe(function (data) {
+                    if (data != null && data.Id != 0) {
                         _this.msg = "Data Successfully Added.";
+                        _this.toggoleShowHide = 0;
                         _this.LoadUsers();
                     }
                     else {
-                        alert("else");
                         _this.msg = "There is some issue in saving records, please contact to system administrator!";
                     }
                 }, function (error) {
-                    alert("error");
                     _this.msg = error;
                 });
                 break;
             case enums_1.DBOperation.update:
-                alert("update");
                 this.userService.put('api/userapi/', formData.value.Id, formData.value).subscribe(function (data) {
-                    if (data == 1) {
+                    if (data != null && data.Id != 0) {
                         _this.msg = "Data successfully updated.";
+                        _this.toggoleShowHide = 0;
                         _this.LoadUsers();
                     }
                     else {
@@ -111,9 +129,10 @@ var UserComponent = (function () {
                 });
             case enums_1.DBOperation.delete:
                 alert("delete");
-                this.userService.delete('api/userapi/', formData._value.Id).subscribe(function (data) {
-                    if (data == 1) {
+                this.userService.delete('api/userapi/', formData.value.Id).subscribe(function (data) {
+                    if (data != null && data.Id != 0) {
                         _this.msg = "Data successfully deleted.";
+                        _this.toggoleShowHide = 0;
                         _this.LoadUsers();
                     }
                     else {
@@ -122,6 +141,9 @@ var UserComponent = (function () {
                 }, function (error) {
                     _this.msg = error;
                 });
+                break;
+            default:
+                alert("default");
                 break;
         }
     };

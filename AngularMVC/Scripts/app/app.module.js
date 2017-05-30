@@ -13,17 +13,10 @@ var app_component_js_1 = require("./app.component.js");
 var forms_1 = require("@angular/forms");
 var http_1 = require("@angular/http");
 var app_routing_1 = require("./app.routing");
-var home_component_1 = require("./components/home.component");
-var user_component_1 = require("./components/user.component");
-var schedule_component_1 = require("./components/schedule.component");
-var parenting_component_1 = require("./components/parenting.component");
-var policies_component_1 = require("./components/policies.component");
-var gallery_component_1 = require("./components/gallery.component");
-var programs_component_1 = require("./components/programs.component");
-var events_component_1 = require("./components/events.component");
-var about_component_1 = require("./components/about.component");
-var contactus_component_1 = require("./components/contactus.component");
-var user_service_1 = require("./services/user.service");
+var index_1 = require("./components/index");
+var index_2 = require("./components/index");
+var alert_component_1 = require("./shared/alert.component");
+var index_3 = require("./services/index");
 var Providers_1 = require("./models/Providers");
 var AppModule = (function () {
     function AppModule() {
@@ -33,9 +26,9 @@ var AppModule = (function () {
 AppModule = __decorate([
     core_1.NgModule({
         imports: [platform_browser_1.BrowserModule, forms_1.ReactiveFormsModule, http_1.HttpModule, app_routing_1.Routing],
-        declarations: [app_component_js_1.AppComponent, user_component_1.UserComponent, home_component_1.HomeComponent, schedule_component_1.ScheduleComponent, parenting_component_1.ParentingComponent,
-            policies_component_1.PoliciesComponent, gallery_component_1.GalleryComponent, programs_component_1.ProgramsComponent, events_component_1.EventsComponent, about_component_1.AboutComponent, contactus_component_1.ContactUsComponent],
-        providers: [{ provide: common_1.APP_BASE_HREF, useValue: '/' }, user_service_1.UserService,
+        declarations: [app_component_js_1.AppComponent, index_1.UserComponent, index_1.HomeComponent, index_1.ProfileComponent, index_1.GalleryComponent,
+            index_1.ProgramsComponent, index_2.PorfolioStocksComponent, index_2.AboutComponent, index_2.ContactUsComponent, index_2.RegisterComponent, alert_component_1.AlertComponent],
+        providers: [{ provide: common_1.APP_BASE_HREF, useValue: '/' }, index_3.UserService, index_3.StockService, index_3.AlertService, index_3.AuthenticationService,
             { provide: Providers_1.lookUpTokenList, useValue: Providers_1.lookUpTokens }],
         bootstrap: [app_component_js_1.AppComponent]
     })

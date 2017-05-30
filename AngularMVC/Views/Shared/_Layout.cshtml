@@ -1,7 +1,8 @@
 ﻿<!DOCTYPE html>
-<html style="background-image:url(../../Images/hands.jpg);">
+<html style="background-image:url(../../Images/light-background-1.jpg);">
 <head>
     <meta charset="utf-8" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/flatly/bootstrap.min.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - My ASP.NET Application</title>
     @Styles.Render("~/Content/css")
@@ -10,6 +11,8 @@
     <script src="~/node_modules/zone.js/dist/zone.js"></script>
     <script src="~/node_modules/reflect-metadata/Reflect.js"></script>
     <script src="~/node_modules/systemjs/dist/system.src.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.1.2/firebase.js"></script>
+
     @* Configure Systemjs *@
     <script src="~/Scripts/systemjs.config.js"></script>
 
@@ -19,7 +22,7 @@
         });
     </script>
 </head>
-<body style="background-image:url(../../Images/hands.jpg); opacity:2.0;">
+<body style="background-image:url(../../Images/light-background-1.jpg); opacity:2.0;">
     <div class="container body-content">
         @RenderBody()
         <hr />

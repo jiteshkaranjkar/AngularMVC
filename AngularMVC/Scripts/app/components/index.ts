@@ -1,0 +1,9 @@
+﻿export { HomeComponent } from './home.component';
+export { UserComponent } from './user.component';
+export { ProfileComponent } from './profile.component';
+export { GalleryComponent } from './gallery.component';
+export { ProgramsComponent } from './programs.component';
+export { PorfolioStocksComponent } from './PorfolioStocks.component';
+export { AboutComponent } from './about.component';
+export { ContactUsComponent } from './contactus.component';
+export { RegisterComponent } from './register.component';

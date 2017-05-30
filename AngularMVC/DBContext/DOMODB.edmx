@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="DOMODBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="DOMODBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Address">
           <Key>
             <PropertyRef Name="Id" />
@@ -85,6 +85,49 @@
           <Property Name="ResidentialAddressID" Type="int" Nullable="false" />
           <Property Name="OfficeAddressID" Type="int" Nullable="false" />
         </EntityType>
+        <EntityType Name="PorfolioStocks">
+          <Key>
+            <PropertyRef Name="StockId" />
+          </Key>
+          <Property Name="StockId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="STOCKNAME" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="DESCRIPTION" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="NETPOSITION" Type="int" Nullable="false" />
+          <Property Name="AVGRATE" Type="decimal" Precision="8" Scale="2" Nullable="false" />
+          <Property Name="CLOSING" Type="decimal" Precision="8" Scale="2" />
+          <Property Name="MARKETRATE" Type="decimal" Precision="8" Scale="2" Nullable="false" />
+          <Property Name="GAINLOSS" Type="decimal" Precision="8" Scale="2" Nullable="false" />
+          <Property Name="MARKETVAL" Type="decimal" Precision="8" Scale="2" Nullable="false" />
+          <Property Name="PERCENTCHANGE" Type="decimal" Precision="8" Scale="2" Nullable="false" />
+          <Property Name="ISIN" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="HOLDINGVALUE" Type="decimal" Precision="8" Scale="2" Nullable="false" />
+        </EntityType>
+        <EntityType Name="StockTransactions">
+          <Key>
+            <PropertyRef Name="StockTransactionId" />
+          </Key>
+          <Property Name="StockTransactionId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="STOCKNAME" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="DESCRIPTION" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="TransactionDate" Type="date" Nullable="false" />
+          <Property Name="TransactionType" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="Rate" Type="decimal" Precision="8" Scale="2" Nullable="false" />
+          <Property Name="Quantity" Type="decimal" Precision="8" Scale="2" Nullable="false" />
+          <Property Name="Amount" Type="decimal" Precision="8" Scale="2" Nullable="false" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="DOB" Type="date" Nullable="false" />
+          <Property Name="Gender" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="EmailId" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Password" Type="varchar" MaxLength="20" />
+        </EntityType>
         <EntityContainer Name="DOMODBModelStoreContainer">
           <EntitySet Name="Address" EntityType="Self.Address" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Admin" EntityType="Self.Admin" Schema="dbo" store:Type="Tables" />
@@ -92,9 +135,11 @@
           <EntitySet Name="Events" EntityType="Self.Events" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FeesSchedule" EntityType="Self.FeesSchedule" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Parent" EntityType="Self.Parent" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PorfolioStocks" EntityType="Self.PorfolioStocks" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="StockTransactions" EntityType="Self.StockTransactions" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="DOMODBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -185,7 +230,53 @@
           <EntitySet Name="Events" EntityType="Self.Event" />
           <EntitySet Name="FeesSchedules" EntityType="Self.FeesSchedule" />
           <EntitySet Name="Parents" EntityType="Self.Parent" />
+          <EntitySet Name="StockTransactions" EntityType="DOMODBModel.StockTransaction" />
+          <EntitySet Name="PorfolioStocks" EntityType="DOMODBModel.PorfolioStock" />
+          <EntitySet Name="Users" EntityType="DOMODBModel.User" />
         </EntityContainer>
+        <EntityType Name="StockTransaction">
+          <Key>
+            <PropertyRef Name="StockTransactionId" />
+          </Key>
+          <Property Name="StockTransactionId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="STOCKNAME" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="DESCRIPTION" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="TransactionDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="TransactionType" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Rate" Type="Decimal" Nullable="false" Precision="8" Scale="2" />
+          <Property Name="Quantity" Type="Decimal" Nullable="false" Precision="8" Scale="2" />
+          <Property Name="Amount" Type="Decimal" Nullable="false" Precision="8" Scale="2" />
+        </EntityType>
+        <EntityType Name="PorfolioStock">
+          <Key>
+            <PropertyRef Name="StockId" />
+          </Key>
+          <Property Name="StockId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="STOCKNAME" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="DESCRIPTION" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="NETPOSITION" Type="Int32" Nullable="false" />
+          <Property Name="AVGRATE" Type="Decimal" Nullable="false" Precision="8" Scale="2" />
+          <Property Name="CLOSING" Type="Decimal" Precision="8" Scale="2" />
+          <Property Name="MARKETRATE" Type="Decimal" Nullable="false" Precision="8" Scale="2" />
+          <Property Name="GAINLOSS" Type="Decimal" Nullable="false" Precision="8" Scale="2" />
+          <Property Name="MARKETVAL" Type="Decimal" Nullable="false" Precision="8" Scale="2" />
+          <Property Name="PERCENTCHANGE" Type="Decimal" Nullable="false" Precision="8" Scale="2" />
+          <Property Name="ISIN" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="HOLDINGVALUE" Type="Decimal" Nullable="false" Precision="8" Scale="2" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserName" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="FirstName" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="DOB" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Gender" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="EmailId" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Password" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -275,6 +366,52 @@
                 <ScalarProperty Name="Alergies" ColumnName="Alergies" />
                 <ScalarProperty Name="ResidentialAddressID" ColumnName="ResidentialAddressID" />
                 <ScalarProperty Name="OfficeAddressID" ColumnName="OfficeAddressID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="StockTransactions">
+            <EntityTypeMapping TypeName="DOMODBModel.StockTransaction">
+              <MappingFragment StoreEntitySet="StockTransactions">
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="Rate" ColumnName="Rate" />
+                <ScalarProperty Name="TransactionType" ColumnName="TransactionType" />
+                <ScalarProperty Name="TransactionDate" ColumnName="TransactionDate" />
+                <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
+                <ScalarProperty Name="STOCKNAME" ColumnName="STOCKNAME" />
+                <ScalarProperty Name="StockTransactionId" ColumnName="StockTransactionId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PorfolioStocks">
+            <EntityTypeMapping TypeName="DOMODBModel.PorfolioStock">
+              <MappingFragment StoreEntitySet="PorfolioStocks">
+                <ScalarProperty Name="HOLDINGVALUE" ColumnName="HOLDINGVALUE" />
+                <ScalarProperty Name="ISIN" ColumnName="ISIN" />
+                <ScalarProperty Name="PERCENTCHANGE" ColumnName="PERCENTCHANGE" />
+                <ScalarProperty Name="MARKETVAL" ColumnName="MARKETVAL" />
+                <ScalarProperty Name="GAINLOSS" ColumnName="GAINLOSS" />
+                <ScalarProperty Name="MARKETRATE" ColumnName="MARKETRATE" />
+                <ScalarProperty Name="CLOSING" ColumnName="CLOSING" />
+                <ScalarProperty Name="AVGRATE" ColumnName="AVGRATE" />
+                <ScalarProperty Name="NETPOSITION" ColumnName="NETPOSITION" />
+                <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
+                <ScalarProperty Name="STOCKNAME" ColumnName="STOCKNAME" />
+                <ScalarProperty Name="StockId" ColumnName="StockId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="DOMODBModel.User">
+              <MappingFragment StoreEntitySet="User">
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="EmailId" ColumnName="EmailId" />
+                <ScalarProperty Name="Gender" ColumnName="Gender" />
+                <ScalarProperty Name="DOB" ColumnName="DOB" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

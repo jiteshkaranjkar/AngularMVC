@@ -20,7 +20,8 @@ var UserService = (function () {
         this.http = http;
     }
     UserService.prototype.get = function (url) {
-        return this.http.get(url)
+        //return this.http.get(url)
+        return this.http.get(url, this.jwt())
             .map(function (response) { return response.json(); })
             .catch(this.handleError);
     };
@@ -28,29 +29,47 @@ var UserService = (function () {
         var body = JSON.stringify(model);
         var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
         var options = new http_1.RequestOptions({ headers: headers });
-        return this.http.put(url + id, body, options)
+        return this.http.put(url + id, body, this.jwt())
+            .map(function (response) { return response.json(); })
+            .catch(this.handleError);
+    };
+    UserService.prototype.login = function (url, model) {
+        var body = JSON.stringify(model);
+        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+        var options = new http_1.RequestOptions({ headers: headers });
+        debugger;
+        console.log("http://localhost:64556/" + url + "/auth");
+        return this.http.post(url + "/auth", body, this.jwt()) //{ username: model.userId, password: model.userPwd }
             .map(function (response) { return response.json(); })
             .catch(this.handleError);
     };
     UserService.prototype.post = function (url, model) {
-        alert("insert Service");
         var body = JSON.stringify(model);
         var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
         var options = new http_1.RequestOptions({ headers: headers });
-        return this.http.post(url, body, options)
+        console.log("http://localhost:64556/" + url + "/register");
+        return this.http.post(url + "/register", body, this.jwt())
             .map(function (response) { return response.json(); })
             .catch(this.handleError);
     };
     UserService.prototype.delete = function (url, id) {
         var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
         var options = new http_1.RequestOptions({ headers: headers });
-        return this.http.post(url + id, options)
+        return this.http.delete(url + id, this.jwt())
             .map(function (response) { return response.json(); })
             .catch(this.handleError);
     };
     UserService.prototype.handleError = function (error) {
         console.error(error);
         return Observable_1.Observable.throw(error.json().error || 'Server error');
+    };
+    UserService.prototype.jwt = function () {
+        // create authorization header with jwt token
+        var currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        if (currentUser && currentUser.token) {
+            var headers = new http_1.Headers({ 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + currentUser.token });
+            return new http_1.RequestOptions({ headers: headers });
+        }
     };
     return UserService;
 }());

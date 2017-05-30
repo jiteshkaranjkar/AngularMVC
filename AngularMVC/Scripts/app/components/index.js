@@ -1,0 +1,21 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var home_component_1 = require("./home.component");
+exports.HomeComponent = home_component_1.HomeComponent;
+var user_component_1 = require("./user.component");
+exports.UserComponent = user_component_1.UserComponent;
+var profile_component_1 = require("./profile.component");
+exports.ProfileComponent = profile_component_1.ProfileComponent;
+var gallery_component_1 = require("./gallery.component");
+exports.GalleryComponent = gallery_component_1.GalleryComponent;
+var programs_component_1 = require("./programs.component");
+exports.ProgramsComponent = programs_component_1.ProgramsComponent;
+var PorfolioStocks_component_1 = require("./PorfolioStocks.component");
+exports.PorfolioStocksComponent = PorfolioStocks_component_1.PorfolioStocksComponent;
+var about_component_1 = require("./about.component");
+exports.AboutComponent = about_component_1.AboutComponent;
+var contactus_component_1 = require("./contactus.component");
+exports.ContactUsComponent = contactus_component_1.ContactUsComponent;
+var register_component_1 = require("./register.component");
+exports.RegisterComponent = register_component_1.RegisterComponent;
+//# sourceMappingURL=index.js.map
